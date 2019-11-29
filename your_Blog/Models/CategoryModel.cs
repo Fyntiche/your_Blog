@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace your_Blog.Models
 {
@@ -10,11 +12,14 @@ namespace your_Blog.Models
     /// </summary>
     public class CategoryModel
     {
+        [HiddenInput]
         /// <summary>
         /// Идентификатор категории.
         /// </summary>
         public int Id { get; set; }
 
+        [Required]
+        [Display(Name = "Название категории")]
         /// <summary>
         /// Название категории.
         /// </summary>

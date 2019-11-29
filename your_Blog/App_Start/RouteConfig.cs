@@ -16,8 +16,8 @@ namespace your_Blog
 
             routes.MapRoute(
             name: "Admin",
-            url: "admin/tagmodels/{action}/{id}",
-            defaults: new { controller = "TagModels", action = "Index", id = UrlParameter.Optional }) ;
+            url: "admin/tag/{action}/{id}",
+            defaults: new { controller = "Tag", action = "Index", id = UrlParameter.Optional }) ;
 
             //routes.MapRoute(
             //name: "Admin",

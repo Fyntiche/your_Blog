@@ -11,7 +11,7 @@ using your_Blog.Models;
 namespace your_Blog.Controllers.Article
 {
     [Authorize]
-    public class TagModelsController : Controller
+    public class TagController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
