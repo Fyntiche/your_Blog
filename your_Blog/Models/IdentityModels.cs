@@ -25,6 +25,22 @@ namespace your_Blog.Models
         {
         }
 
+        public DbSet<ArticleModel> Articles { get; set; }
+        public DbSet<CategoryModel> Categories { get; set; }
+        public DbSet<TagModel> Tags { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<TagModel>().HasMany(c => c.Articles)
+                .WithMany(s => s.Tags)
+                .Map(t => t.MapLeftKey("TagId")
+                .MapRightKey("ArticleId")
+                .ToTable("TagArticle"));
+        }
+
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
