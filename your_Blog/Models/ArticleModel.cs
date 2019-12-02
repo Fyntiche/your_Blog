@@ -32,7 +32,6 @@ namespace your_Blog.Models
         public string ShortDescription { get; set; }
 
         [Display(Name = "Дата создания")]
-        [HiddenInput]
         /// <summary>
         /// Дата содания статьи.
         /// </summary>
