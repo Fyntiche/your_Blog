@@ -51,7 +51,17 @@
                 <li>@c.Name</li>
             }
         </dd>
-
+        <dt>
+            @Html.DisplayNameFor(model => model.HeroImage)
+        </dt>
+        <dd>
+            <div class="col-sm-2">
+                @if (Model.HeroImage != null)
+                {
+                    @Html.Raw("<img class=\"img-responsive\" src=\"data:image/jpeg;base64," + Convert.ToBase64String(Model.HeroImage) + "\" />")
+                }
+            </div>
+        </dd>
     </dl>
 </div>
 <p>

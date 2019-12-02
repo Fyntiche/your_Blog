@@ -55,9 +55,9 @@ namespace your_Blog.Models
         {
             Tags = new List<TagModel>();
         }
-        
 
-        // :TODO изображение public byte[] Hero_Image { get; set; }
+        [Display(Name = "Фотография")]
+        public byte[] HeroImage { get; set; }
 
 
 

@@ -56,8 +56,18 @@
                     </ul>
                 </td>
                 <td>
+                    <div class="col-sm-2">
+                        @if (item.HeroImage != null)
+                        {
+                            @Html.Raw("<img class=\"img-responsive\" src=\"data:image/jpeg;base64," + Convert.ToBase64String(item.HeroImage) + "\" />")
+                        }
+                    </div>
+                </td>
+                <td>
                     @Html.ActionLink("Details", "Details", new { id = item.Id })
                 </td>
+
+                
                 @if (User.Identity.IsAuthenticated)
                 {
                     <td>

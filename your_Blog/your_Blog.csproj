@@ -191,6 +191,10 @@
     <Compile Include="Migrations\201911291227598_MigrateDB3.Designer.cs">
       <DependentUpon>201911291227598_MigrateDB3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912020927458_MigrateDB4.cs" />
+    <Compile Include="Migrations\201912020927458_MigrateDB4.Designer.cs">
+      <DependentUpon>201912020927458_MigrateDB4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ArticleModel.cs" />
@@ -286,6 +290,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911291227598_MigrateDB3.resx">
       <DependentUpon>201911291227598_MigrateDB3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912020927458_MigrateDB4.resx">
+      <DependentUpon>201912020927458_MigrateDB4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

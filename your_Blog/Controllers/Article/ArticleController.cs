@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using your_Blog.Models;
+using System.IO;
 
 namespace your_Blog.Controllers.Article
 {
@@ -50,8 +51,12 @@ namespace your_Blog.Controllers.Article
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,ShortDescription,Date,CategoryId")] ArticleModel articleModel, int[] selectedTags)
+        public async Task<ActionResult> Create(
+            [Bind(Include = "Id,Name,ShortDescription,CategoryId")] ArticleModel articleModel,
+            int[] selectedTags,
+            HttpPostedFileBase uploadFoto)
         {
+            articleModel.Date = DateTime.Now;
             if (ModelState.IsValid)
             {
                 if (selectedTags != null)
@@ -62,6 +67,18 @@ namespace your_Blog.Controllers.Article
                         articleModel.Tags.Add(c);
                     }
                 }
+
+                if (uploadFoto != null)
+                {
+                    byte[] fotoData = null;
+                    using (var binaryReader = new BinaryReader(uploadFoto.InputStream))
+                    {
+                        fotoData = binaryReader.ReadBytes(uploadFoto.ContentLength);
+                    }
+                    articleModel.HeroImage = fotoData;
+                }
+
+
                 db.Articles.Add(articleModel);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -94,7 +111,10 @@ namespace your_Blog.Controllers.Article
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,ShortDescription,Date,CategoryId")] ArticleModel articleModel, int[] selectedTags)
+        public async Task<ActionResult> Edit(
+            [Bind(Include = "Id,Name,ShortDescription,Date,CategoryId")] ArticleModel articleModel,
+            int[] selectedTags,
+            HttpPostedFileBase uploadFoto)
         {
             if (ModelState.IsValid)
             {
@@ -107,6 +127,16 @@ namespace your_Blog.Controllers.Article
                     {
                         newArticleModel.Tags.Add(c);
                     }
+                }
+
+                if (uploadFoto != null)
+                {
+                    byte[] fotoData = null;
+                    using (var binaryReader = new BinaryReader(uploadFoto.InputStream))
+                    {
+                        fotoData = binaryReader.ReadBytes(uploadFoto.ContentLength);
+                    }
+                    newArticleModel.HeroImage = fotoData;
                 }
 
                 db.Entry(newArticleModel).State = EntityState.Modified;
