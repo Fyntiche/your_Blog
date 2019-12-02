@@ -1,45 +1,216 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    <link rel='stylesheet' id='reset-css' href='~/Content/css/reset.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='superfish-css' href='~/Content/css/superfish.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='fontawsome-css' href='~/Content/css/font-awsome/css/font-awesome.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='orbit-css-css' href='~/Content/css/orbit.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='style-css' href='~/Content/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='color-scheme-css' href='~/Content/css/color/green.css' type='text/css' media='all' />
+    <link rel="stylesheet" href="~/Content/css/zerogrid.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="~/Content/css/responsive.css" type="text/css" media="screen">
+    <script type='text/javascript' src='~/Scripts/js/jquery.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/jquery-migrate.min.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/jquery-1.10.2.min.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/jquery.carouFredSel-6.2.1-packed.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/hoverIntent.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/superfish.js'></script>
+    <script type='text/javascript' src='~/Scripts/js/orbit.min.js'></script>
+    <script src="~/Scripts/js/css3-mediaqueries.js"></script>
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Статьи", "Index", "Article", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li>@Html.ActionLink("Теги", "Index", "Tag")</li>
-                        <li>@Html.ActionLink("Категории", "Index", "Category")</li>
-                    }
-                </ul>
-                @Html.Partial("_LoginPartial")
+<body class="home blog">
+    <!-- Start Header -->
+    <div class="container zerogrid">
+        <div class="col-full">
+            <div class="wrap-col">
+                <div id="header-nav-container">
+
+
+                    <!-- Navigation Menu -->
+
+                    <ul class="sf-menu headerMenuItemWrp">
+                        <div class="headerMenuItemLeft">
+                            <li>
+                                @Html.ActionLink("Статьи", "Index", "Article", new { area = "" }, new { @class = "menu-item current-menu-item" })
+                            </li>
+                            <li class="menu-item">
+                                <a href="#">
+                                    Админ. панель
+                                </a>
+                                <ul class="sub-menu">
+                                    <li class="menu-item">
+                                        @Html.ActionLink("Теги", "Index", "Tag")
+                                    </li>
+                                    <li class="menu-item">
+                                        @Html.ActionLink("Категории", "Index", "Category")
+                                    </li>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="headerMenuItemRight">
+                            @Html.Partial("_LoginPartial")
+                        </div>
+                    </ul>
+                    <!-- End Navigation Menu -->
+                    <div class="clear"></div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - мой Блог</p>
-        </footer>
+    <div class="container zerogrid">
+        <!-- Start Posts Container -->
+        <div class="col-2-3" id="post-container">
+            <div class="wrap-col">
+                <!-- Start Post Item -->
+                <div class="post">
+                    <div class="post-margin">
+                        <div class="post-avatar">
+                            <img alt='' src='http://1.gravatar.com/avatar/16afd22c8bf5c2398b206a76c9316a3c?s=70&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D70&amp;r=G' class='avatar avatar-70 photo' height='70' width='70' />
+                        </div>
+
+                        <h4 class="post-title">
+                            <a href="#">
+                                Port Harbor
+                            </a>
+                        </h4>
+                        <ul class="post-status">
+                            <li>
+                                <i class="fa fa-clock-o">
+                                </i>December 13, 2013
+                            </li>
+                            <li>
+                                <i class="fa fa-folder-open-o">
+                                </i>
+                                <a href="#" title="View all posts in Illustration" rel="category">
+                                    Illustration
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="featured-image">
+                        <img src="img/Port_Harbor1-610x350.jpg" class="attachment-post-standard " />
+                        <div class="post-icon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="post-margin">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet auctor ligula. Donec eu placerat lacus, pellentesque tincidunt felis. Aliquam dictum cursus elit, et sagittis nibh tincidunt quis. Vestibulum leo dui, ullamcorper quis erat nec, accumsan imperdiet ligula. Maecenas ut dui sed arcu sodales consequat. Nulla et est ac lacus congue volutpat. Aliquam vehicula tincidunt sem eget cursus. Nam sed mollis diam. Pellentesque id felis ut diam dignissim egestas id non ipsum.
+
+                            Ut id magna eu eros vehicula sollicitudin at et odio. Mauris consectetur tortor in mauris aliquet feugiat. Etiam
+                        </p>
+                    </div>
+
+                    <ul class="post-social">
+                        <li>
+                            <a href="#" class="readmore">
+                                Read More
+                                <i class="fa fa-arrow-circle-o-right">
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- End Post Item -->
+                <!-- Start Pagination -->
+                <ul class="pagination">
+                    <li class='current'>
+                        <a href=''>1</a>
+                    </li>
+                    <li>
+                        <a href=''>2</a>
+                    </li>
+                    <li>
+                        <a href=''>3</a>
+                    </li>
+                    <li>
+                        <a href=''>4</a>
+                    </li>
+                </ul>
+                <!-- End Pagination -->
+            </div>
+        </div>
+        <!-- End Posts Container -->
+        <!-- Start Sidebar -->
+        <div class="col-1-3">
+            <div class="wrap-col">
+                <div class="widget-container">
+                    <h6 class="widget-title">Категории</h6>
+
+                </div>
+                <div class="widget-container">
+                    <h6 class="widget-title">Теги</h6>
+                    <ul>
+                        <li class="cat-item cat-item-5">
+                            <a href="#" title="View all posts filed under Apps">Apps</a>
+                        </li>
+                        <li class="cat-item cat-item-3">
+                            <a href="#" title="View all posts filed under Illustration">Illustration</a>
+                        </li>
+                        <li class="cat-item cat-item-4">
+                            <a href="#" title="View all posts filed under Logo">Logo</a>
+                        </li>
+                    </ul>
+                    <!-- End Widget -->
+                </div>
+            </div>
+        </div>        <!-- End Sidebar -->
     </div>
+    <!-- End Main Container -->
+    <!-- End Header -->
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Статьи", "Index", "Article", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>@Html.ActionLink("Теги", "Index", "Tag")</li>
+                            <li>@Html.ActionLink("Категории", "Index", "Category")</li>
+                        }
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>*@
+    @*<div class="container body-content">*@
+    @RenderBody()
+    @*<hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - мой Блог</p>
+            </footer>
+        </div>*@
+    <div class="container zerogrid">
+        <div id="footer-container" class="col-full">
+            <div class="wrap-col">
+                <!-- Footer Copyright -->
+                <p>Your blog &copy; 2019 </p>
+                <!-- End Footer Copyright -->
+                <!-- Footer Logo -->
+                <!-- End Footer Logo -->
+            </div>
+        </div>
+    </div>
+    <!-- End Footer -->
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

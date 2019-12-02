@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace your_Blog
@@ -12,17 +8,17 @@ namespace your_Blog
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-           
+
 
             routes.MapRoute(
             name: "AdmiTag",
             url: "admin/tag/{action}/{id}",
-            defaults: new { controller = "Tag", action = "Index", id = UrlParameter.Optional }) ;
+            defaults: new { controller = "Tag", action = "Index", id = UrlParameter.Optional });
 
             routes.MapRoute(
             name: "AdminCategory",
             url: "admin/category/{action}/{id}",
-            defaults: new { controller = "Category", action = "Index", id = UrlParameter.Optional }) ;
+            defaults: new { controller = "Category", action = "Index", id = UrlParameter.Optional });
 
             routes.MapRoute("Account", "admin/{action}",
             new { controller = "Account", action = "Login", id = UrlParameter.Optional });
@@ -30,7 +26,7 @@ namespace your_Blog
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Article", action = "Index", id = UrlParameter.Optional } 
+                defaults: new { controller = "Article", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

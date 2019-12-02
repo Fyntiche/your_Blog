@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace your_Blog.Models
 {
@@ -49,5 +48,5 @@ namespace your_Blog.Models
         public string ConfirmPassword { get; set; }
     }
 
-    
+
 }

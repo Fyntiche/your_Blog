@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using your_Blog.Models;
-using System.IO;
 
 namespace your_Blog.Controllers.Article
 {
@@ -96,7 +95,7 @@ namespace your_Blog.Controllers.Article
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ArticleModel articleModel = await db.Articles.FindAsync(id);
-            
+
             if (articleModel == null)
             {
                 return HttpNotFound();
@@ -181,5 +180,6 @@ namespace your_Blog.Controllers.Article
             }
             base.Dispose(disposing);
         }
+
     }
 }
