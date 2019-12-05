@@ -18,6 +18,10 @@ namespace your_Blog.Controllers.Article
         // GET: Article
         public async Task<ActionResult> Index()
         {
+            var category = db.Categories.ToList();
+            var Tag = db.Tags.ToList();
+            ViewBag.Category = category;
+            ViewBag.Tag = Tag;
             var articles = db.Articles.Include(a => a.Category);
             return View(await articles.ToListAsync());
         }
@@ -51,7 +55,7 @@ namespace your_Blog.Controllers.Article
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(
-            [Bind(Include = "Id,Name,ShortDescription,CategoryId")] ArticleModel articleModel,
+            [Bind(Include = "Id,Name,ShortDescription,Description,CategoryId")] ArticleModel articleModel,
             int[] selectedTags,
             HttpPostedFileBase uploadFoto)
         {
@@ -100,7 +104,9 @@ namespace your_Blog.Controllers.Article
             {
                 return HttpNotFound();
             }
-            ViewBag.Tags = db.Tags.ToList();
+            //SelectList tags = new SelectList(db.Tags, "Id", "Name", articleModel.Tags);
+            ViewBag.Tags = db.Tags.Include(x => x.Articles).ToList();
+            //ViewBag.Tags = db.Tags.ToList();
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", articleModel.CategoryId);
             return View(articleModel);
         }
@@ -111,20 +117,21 @@ namespace your_Blog.Controllers.Article
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(
-            [Bind(Include = "Id,Name,ShortDescription,Date,CategoryId")] ArticleModel articleModel,
+            /*[Bind(Include = "Id,Name,ShortDescription,Description,Date,CategoryId")]*/ ArticleModel articleModel,
             int[] selectedTags,
             HttpPostedFileBase uploadFoto)
         {
+            articleModel.Date = DateTime.Now;
             if (ModelState.IsValid)
             {
-                ArticleModel newArticleModel = db.Articles.Find(articleModel.Id);
-                newArticleModel.Tags.Clear();
+
                 if (selectedTags != null)
                 {
+                    articleModel.Tags.Clear();
                     //получаем выбранные теги
                     foreach (var c in db.Tags.Where(co => selectedTags.Contains(co.Id)))
                     {
-                        newArticleModel.Tags.Add(c);
+                        articleModel.Tags.Add(c);
                     }
                 }
 
@@ -135,10 +142,9 @@ namespace your_Blog.Controllers.Article
                     {
                         fotoData = binaryReader.ReadBytes(uploadFoto.ContentLength);
                     }
-                    newArticleModel.HeroImage = fotoData;
+                    articleModel.HeroImage = fotoData;
                 }
-
-                db.Entry(newArticleModel).State = EntityState.Modified;
+                db.Entry(articleModel).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -180,6 +186,8 @@ namespace your_Blog.Controllers.Article
             }
             base.Dispose(disposing);
         }
+
+
 
     }
 }

@@ -1,0 +1,12 @@
+﻿<h6 class="widget-title">Категории</h6>
+<ul>
+    @if (ViewBag.Category != null)
+    {
+        foreach (var item in ViewBag.Category)
+        {
+            <li>
+                @item.Name
+            </li>
+        }
+    }
+</ul>

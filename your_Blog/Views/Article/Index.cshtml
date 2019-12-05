@@ -2,80 +2,151 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
 }
-
-<h2>Index</h2>
-
 @if (User.Identity.IsAuthenticated)
 {
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
+    <div class="post">
+        <ul class="post-margin">
+
+            <li>
+                @Html.ActionLink("Добавить статью", "Create", null, new { @class = "readmore" })
+            </li>
+        </ul>
+    </div>
 }
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Category.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShortDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tags)
-            </th>
-            <th></th>
-        </tr>
 
-        @foreach (var item in Model)
+@foreach (var item in Model)
+{
+<div class="post">
+
+    <div class="post-margin">
+
+        <div class="post-avatar">
+            <div class="avatar-frame"></div>
+            <img alt='' src='http://1.gravatar.com/avatar/16afd22c8bf5c2398b206a76c9316a3c?s=70&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D70&amp;r=G' class='avatar avatar-70 photo' height='70' width='70' />
+        </div>
+
+        <h4 class="post-title">@Html.DisplayFor(modelItem => item.Name)</h4>
+        <ul class="post-status">
+            <li><i class="fa fa-clock-o"></i> @Html.DisplayFor(modelItem => item.Date)</li>
+            <li><i class="fa fa-folder-open-o"></i>@Html.DisplayFor(modelItem => item.Category.Name)</li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+
+    <div class="featured-image">
+        @if (item.HeroImage != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ShortDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    <ul>
-                        @foreach (var c in item.Tags)
-                        {
-                            <li>@Html.DisplayFor(modelItem => c.Name)</li>
-                        }
-                    </ul>
-                </td>
-                <td>
-                    <div class="col-sm-2">
-                        @if (item.HeroImage != null)
-                        {
-                            @Html.Raw("<img class=\"img-responsive\" src=\"data:image/jpeg;base64," + Convert.ToBase64String(item.HeroImage) + "\" />")
-                        }
-                    </div>
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })
-                </td>
-
-                
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>
-                }
-            </tr>
+            @Html.Raw("<img class=\"img-responsive\" src=\"data:image/jpeg;base64," + Convert.ToBase64String(item.HeroImage) + "\" />")
         }
+        <div class="post-icon">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
 
-    </table>
+                <a href="@Url.Action("Edit", new { id=item.Id}) ">
+
+                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                </a>
+            </span>
+        </div>
+    </div>
+
+    <div class="post-margin">
+        <p>
+            @Html.DisplayFor(modelItem => item.ShortDescription)
+        </p>
+    </div>
+    <ul>
+        @foreach (var c in item.Tags)
+        {
+            <li>@Html.DisplayFor(modelItem => c.Name)</li>
+        }
+    </ul>
+    <ul class="post-social">
+
+        <li>
+            @Html.ActionLink("Просмотреть", "Details", new { id = item.Id, @class = "readmore" })
+        </li>
+    </ul>
+
+    <div class="clear"></div>
+</div>
+}
+<!-- Start Pagination -->
+<div class="spacing-20"></div>
+<ul class="pagination"><li class='current'><a href=''>1</a></li><li><a href=''>2</a></li><li><a href=''>3</a></li><li><a href=''>4</a></li></ul>
+<!-- End Pagination -->
+@*@if (User.Identity.IsAuthenticated)
+    {
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+    }
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ShortDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tags)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShortDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        <ul>
+                            @foreach (var c in item.Tags)
+                            {
+                                <li>@Html.DisplayFor(modelItem => c.Name)</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <div class="col-sm-2">
+                            @if (item.HeroImage != null)
+                            {
+                                @Html.Raw("<img class=\"img-responsive\" src=\"data:image/jpeg;base64," + Convert.ToBase64String(item.HeroImage) + "\" />")
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    </td>
+
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        </td>
+                    }
+                </tr>
+            }
+
+        </table>*@

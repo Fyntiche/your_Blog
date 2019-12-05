@@ -1,0 +1,12 @@
+﻿<h6 class="widget-title">Теги</h6>
+<ul>
+    @if (ViewBag.Tag != null)
+    {
+        foreach (var item in ViewBag.Tag)
+        {
+            <li>
+                @item.Name
+            </li>
+        }
+    }
+</ul>

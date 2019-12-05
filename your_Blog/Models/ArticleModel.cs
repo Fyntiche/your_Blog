@@ -29,6 +29,14 @@ namespace your_Blog.Models
         /// </summary>
         public string ShortDescription { get; set; }
 
+        [Display(Name = "Текст статьи")]
+        /// <summary>
+        /// Текст статьи.
+        /// </summary>
+        public string Description { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Display(Name = "Дата создания")]
         /// <summary>
         /// Дата содания статьи.
