@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using your_Blog.Models;
+using static your_Blog.Models.PageInfo;
 
 namespace your_Blog.Controllers.Article
 {
@@ -16,15 +18,24 @@ namespace your_Blog.Controllers.Article
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Article
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int page = 1)
         {
+            int pageSize = 3;
             var category = db.Categories.ToList();
             var Tag = db.Tags.ToList();
             ViewBag.Category = category;
             ViewBag.Tag = Tag;
-            var articles = db.Articles.Include(a => a.Category);
-            return View(await articles.ToListAsync());
+            IEnumerable<ArticleModel> articles = await db.Articles
+                .Include(a => a.Category)
+                .OrderByDescending(a => a.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize).ToListAsync();
+            PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = db.Articles.Count() };
+            IndexViewModel<ArticleModel> ivm = new IndexViewModel<ArticleModel>() { Articles = articles, pageInfo = pageInfo };
+
+            return View(ivm);
         }
+
 
         // GET: Article/Details/5
         public async Task<ActionResult> Details(int? id)
