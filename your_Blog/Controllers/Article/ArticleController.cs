@@ -34,6 +34,8 @@ namespace your_Blog.Controllers.Article
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ArticleModel articleModel = await db.Articles.FindAsync(id);
+
+            
             if (articleModel == null)
             {
                 return HttpNotFound();
@@ -99,7 +101,7 @@ namespace your_Blog.Controllers.Article
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ArticleModel articleModel = await db.Articles.FindAsync(id);
-
+        
             if (articleModel == null)
             {
                 return HttpNotFound();
@@ -121,17 +123,24 @@ namespace your_Blog.Controllers.Article
             int[] selectedTags,
             HttpPostedFileBase uploadFoto)
         {
-            articleModel.Date = DateTime.Now;
+            ArticleModel newAtricle = db.Articles.Find(articleModel.Id);
+            newAtricle.Name = articleModel.Name;
+            newAtricle.ShortDescription = articleModel.ShortDescription;
+            newAtricle.CategoryId = articleModel.CategoryId;
+            newAtricle.Description = articleModel.Description;
+            newAtricle.Date = DateTime.Now;
+            newAtricle.HeroImage = articleModel.HeroImage;
+
             if (ModelState.IsValid)
             {
 
                 if (selectedTags != null)
                 {
-                    articleModel.Tags.Clear();
+                    newAtricle.Tags.Clear();
                     //получаем выбранные теги
                     foreach (var c in db.Tags.Where(co => selectedTags.Contains(co.Id)))
                     {
-                        articleModel.Tags.Add(c);
+                        newAtricle.Tags.Add(c);
                     }
                 }
 
@@ -142,9 +151,9 @@ namespace your_Blog.Controllers.Article
                     {
                         fotoData = binaryReader.ReadBytes(uploadFoto.ContentLength);
                     }
-                    articleModel.HeroImage = fotoData;
+                    newAtricle.HeroImage = fotoData;
                 }
-                db.Entry(articleModel).State = EntityState.Modified;
+                db.Entry(newAtricle).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

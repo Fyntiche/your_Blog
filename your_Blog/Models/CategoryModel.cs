@@ -29,5 +29,6 @@ namespace your_Blog.Models
         {
             Articles = new List<ArticleModel>();
         }
+
     }
 }

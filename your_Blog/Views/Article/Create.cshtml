@@ -2,10 +2,10 @@
 @model your_Blog.Models.ArticleModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create article";
 }
 
-<h2>Create</h2>
+<h2>Создание новой статьи</h2>
 
 
 @using (Html.BeginForm("Create", "Article", FormMethod.Post, new { enctype = "multipart/form-data" }))

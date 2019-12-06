@@ -43,16 +43,16 @@ namespace your_Blog.Models
         /// </summary>
         public DateTime Date { get; set; }
 
-        [Display(Name = "Категория статьи")]
+        
         /// <summary>
         /// Связь с категорией статьи.
         /// </summary>
         public int CategoryId { get; set; }
-
+        [Display(Name = "Категория статьи")]
         /// <summary>
         /// Навигационное своейство категории статьи.
         /// </summary>
-        public CategoryModel Category { get; set; }
+        public virtual CategoryModel Category { get; set; }
 
         [Display(Name = "Теги")]
         public virtual ICollection<TagModel> Tags { get; set; }
@@ -66,6 +66,6 @@ namespace your_Blog.Models
         public byte[] HeroImage { get; set; }
 
 
-
+  
     }
 }
