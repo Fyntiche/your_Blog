@@ -346,6 +346,7 @@
     <Content Include="Views\Article\TagsPartial.cshtml" />
     <Content Include="Views\Shared\_LayoutIndex.cshtml" />
     <Content Include="Views\Article\Index.cshtml" />
+    <Content Include="Views\Article\DatePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

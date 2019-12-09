@@ -98,15 +98,18 @@
         <!-- Start Sidebar -->
         <div class="col-1-3">
             <div class="wrap-col">
+
                 <div class="widget-container">
                     @Html.Partial("CategoryPartial")
-
-
                 </div>
+
                 <div class="widget-container">
                     @Html.Partial("TagsPartial")
                     <!-- End Widget -->
                     <div class="clear"></div>
+                </div>
+                <div class="widget-container">
+                    @Html.Partial("DatePartial")
                 </div>
                 <div class="clear"></div>
             </div>
@@ -138,5 +141,6 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 @RenderSection("scripts", required: false)
+
 </body>
 </html>

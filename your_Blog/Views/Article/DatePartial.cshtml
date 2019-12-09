@@ -1,0 +1,32 @@
+﻿
+<ul>
+    @using (Html.BeginForm("PublicationDate", "Article", FormMethod.Post))
+    {
+        <li>Дата публикации:</li>
+        if (ViewBag.DateAt == null && ViewBag.DateTo == null)
+        {
+            <li>
+                c :
+                <input type="date" class="form-control" id="date" name="dateAt" placeholder="Дата" required>
+            </li>
+            <li>
+                по :
+                <input type="date" class="form-control" id="date" name="dateTo" placeholder="Дата" required>
+            </li>
+        }
+        else
+        {
+<li>
+    c : @ViewBag.DateAt.ToString("D") 
+</li>
+<li>
+    по : @ViewBag.DateTo.ToString("D")
+</li>
+        }
+        <li>
+            @Html.AntiForgeryToken()
+            <input type="submit" value="Фильтр" class="btn btn-default" />
+            @Html.ActionLink("Сбросить", "Index", "Article", new { area = "" }, new { @class = "btn btn-default" })
+        </li>
+    }
+</ul>

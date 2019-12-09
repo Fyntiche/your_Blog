@@ -276,5 +276,34 @@ namespace your_Blog.Controllers.Article
             return View("Index", ivm);
         }
 
+        public ActionResult PublicationDate(DateTime dateAt, DateTime dateTo, int page = 1)
+        {
+
+            List<ArticleModel> articleModels = db.Articles.ToList();
+
+                if (dateTo < dateAt)
+                {
+                dateTo = dateAt;
+                }
+                articleModels = articleModels.Where(p => p.Date >= dateAt && p.Date <= dateTo).ToList();
+
+            if (articleModels == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            int pageSize = 3;
+            IEnumerable<ArticleModel> articles = articleModels.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = articleModels.Count() };
+            IndexViewModel<ArticleModel> ivm = new IndexViewModel<ArticleModel>() { Articles = articles, pageInfo = pageInfo };
+
+            var categoryList = db.Categories.ToList();
+            var Tag = db.Tags.ToList();
+            ViewBag.Category = categoryList;
+            ViewBag.DateAt = dateAt;
+            ViewBag.DateTo = dateTo;
+            ViewBag.Tag = Tag;
+            return View("Index", ivm);
+        }
     }
 }
