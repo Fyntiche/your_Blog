@@ -1,12 +1,34 @@
 ﻿<h6 class="widget-title">Теги</h6>
 <ul>
+
     @if (ViewBag.Tag != null)
     {
-        foreach (var item in ViewBag.Tag)
+
+        using (Html.BeginForm("Tag", "Article", FormMethod.Post))
         {
             <li>
-                @item.Name
+                @Html.AntiForgeryToken()
+                <input type="submit" value="Фильтр" class="btn btn-default" />
+                @Html.ActionLink("Сбросить", "Index", "Article", new { area = "" }, new { @class = "btn btn-default" })
             </li>
+
+
+            foreach (var c in (ViewBag.tagList == null ? ViewBag.Tag : ViewBag.tagList))
+            {
+                <li>
+
+                    @if (ViewBag.tagList == null)
+                    {
+                        <input type="checkbox" name="selectedTags" value="@c.Id"
+                               @(ViewBag.Tag.Contains(c) ? "" : "checked=\" checked\"") />
+
+                    }
+
+                    @c.Name
+                </li>
+            }
         }
     }
+
+
 </ul>

@@ -63,7 +63,7 @@
         @foreach (TagModel c in ViewBag.Tags)
         {
             <input type="checkbox" name="selectedTags" value="@c.Id"
-                   @(Model.Tags.Contains(c) ? "checked=\"checked\"" : "") />@c.Name <br />
+                   @(Model.Tags.Contains(c) ? "" : "checked=\"checked\"") />@c.Name <br />
             }
 
         <div class="form-group">

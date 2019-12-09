@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using your_Blog.Models;
-using static your_Blog.Models.PageInfo;
 
 namespace your_Blog.Controllers.Article
 {
@@ -46,7 +45,7 @@ namespace your_Blog.Controllers.Article
             }
             ArticleModel articleModel = await db.Articles.FindAsync(id);
 
-            
+
             if (articleModel == null)
             {
                 return HttpNotFound();
@@ -112,7 +111,7 @@ namespace your_Blog.Controllers.Article
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ArticleModel articleModel = await db.Articles.FindAsync(id);
-        
+
             if (articleModel == null)
             {
                 return HttpNotFound();
@@ -207,7 +206,75 @@ namespace your_Blog.Controllers.Article
             base.Dispose(disposing);
         }
 
+        public ActionResult Category(string name, int page = 1)
+        {
+            CategoryModel category = db.Categories.Include(p => p.Articles).FirstOrDefault(t => t.Name == name.ToString());
+            if (category == null)
+            {
+                return RedirectToAction("Index");
+            }
 
+            int pageSize = 3;
+            IEnumerable<ArticleModel> articles = category.Articles.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = category.Articles.Count() };
+            IndexViewModel<ArticleModel> ivm = new IndexViewModel<ArticleModel>() { Articles = articles, pageInfo = pageInfo };
+
+            ViewBag.Title = name;
+            var categoryList = db.Categories.ToList();
+            var Tag = db.Tags.ToList();
+            ViewBag.Category = categoryList;
+            ViewBag.Tag = Tag;
+            return View("Index", ivm);
+        }
+
+
+        public ActionResult Tag(int[] selectedTags, int page = 1)
+        {
+            IEnumerable<ArticleModel> articles = default;
+            int pageSize = 3;
+            PageInfo pageInfo;
+            if (selectedTags == null)
+            {
+                return RedirectToAction("Index");
+            }
+            if (selectedTags != null && selectedTags.Count() != 1)
+            {
+                IEnumerable<TagModel> tags = db.Tags.Include(p => p.Articles).Where(co => selectedTags.Contains(co.Id));
+                if (tags == null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                IEnumerable<ArticleModel> articlesbuffer = default;
+
+
+                foreach (var item in tags)
+                {
+                    articlesbuffer = item.Articles.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    articles = articlesbuffer.Union(item.Articles.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList());
+
+                }
+                pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = articles.Count() };
+            }
+
+            else
+            {
+                var tagName = selectedTags[0].ToString();
+                TagModel tag = db.Tags.Include(p => p.Articles).FirstOrDefault(t => t.Id.ToString() == tagName);
+                articles = tag.Articles.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = tag.Articles.Count() };
+            }
+
+            IndexViewModel<ArticleModel> ivm = new IndexViewModel<ArticleModel>() { Articles = articles, pageInfo = pageInfo };
+
+            var categoryList = db.Categories.ToList();
+            var tagfull = db.Tags.ToList();
+            var tagList = db.Tags.Where(x => selectedTags.Contains(x.Id)).ToList();
+            ViewBag.Category = categoryList;
+            ViewBag.Tag = tagfull;
+            ViewBag.tagList = tagList;
+            return View("Index", ivm);
+        }
 
     }
 }

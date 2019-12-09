@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace your_Blog.Models
 {
@@ -11,10 +9,7 @@ namespace your_Blog.Models
         public int PageSize { get; set; }
         public int TotalItems { get; set; }
 
-        public int TotalPages
-        {
-            get { return (int)Math.Ceiling((decimal)TotalItems / PageSize); }
-        }
+        public int TotalPages => (int)Math.Ceiling((decimal)TotalItems / PageSize);
     }
 
     public class IndexViewModel<T>

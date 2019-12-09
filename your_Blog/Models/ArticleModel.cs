@@ -23,6 +23,7 @@ namespace your_Blog.Models
         /// </summary>
         public string Name { get; set; }
 
+        [DataType(DataType.MultilineText)]
         [Display(Name = "Краткое описание статьи")]
         /// <summary>
         /// Краткое описание статьи.
@@ -43,7 +44,7 @@ namespace your_Blog.Models
         /// </summary>
         public DateTime Date { get; set; }
 
-        
+
         /// <summary>
         /// Связь с категорией статьи.
         /// </summary>
@@ -66,6 +67,6 @@ namespace your_Blog.Models
         public byte[] HeroImage { get; set; }
 
 
-  
+
     }
 }

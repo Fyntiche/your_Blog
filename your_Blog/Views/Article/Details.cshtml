@@ -4,21 +4,13 @@
     ViewBag.Title = "Details";
 }
 
-
 <div class="container zerogrid">
 
-    <!-- Start Posts Container -->
     <div class="col-2-3" id="post-container">
         <div class="wrap-col">
 
-
-
-            <!-- Start Post Item -->
             <div class="post">
                 <div class="post-margin">
-
-
-
                     <h4>@Html.DisplayFor(model => model.Name)</h4>
                     <ul class="post-status">
                         <li><i class="fa fa-clock-o"></i>@Html.DisplayFor(model => model.Date)</li>
@@ -35,9 +27,7 @@
                     <div class="post-icon">
                         <span class="fa-stack fa-lg">
                             <i class="fa fa-circle fa-stack-2x"></i>
-
                             <a href="@Url.Action("Edit", new { id=Model.Id}) ">
-
                                 <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                             </a>
                         </span>
@@ -46,9 +36,6 @@
 
                 <div class="post-margin">
                     <p>@Html.DisplayFor(model => model.Description)</p>
-
-                    <!-- Post Tags -->
-
                     <div class="post-tags">
                         <span class="fa-stack fa-lg">
                             <i class="fa fa-circle fa-stack-2x"></i>
@@ -56,9 +43,7 @@
                         </span>
                         @foreach (var c in Model.Tags)
                         {
-
                             @(c.Name + "; ");
-
                         }
                     </div>
                     &nbsp;
@@ -68,104 +53,17 @@
                         </li>
                     </ul>
                     <ul class="post-status">
-
                         <li>
                             @Html.ActionLink("Удалить", "Delete", new { id = Model.Id, @class = "readmore" })
                         </li>
-
                     </ul>
-                    <div class="clear"></div>            <!-- End Post Tags -->
-
+                    <div class="clear"></div>
                 </div>
-
                 <div class="clear"></div>
             </div>
-            <!-- End Post Item -->
-
-
             <div class="clear"></div>
         </div>
     </div>
-    <!-- End Posts Container -->
-    <!-- Start Sidebar -->
-
-
     <div class="clear"></div>
 </div>
 
-
-@*<h2>Details</h2>
-
-<div>
-    <h4>ArticleModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Category.Name)
-        </dt>
-       
-        <dd>
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ShortDescription)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShortDescription)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Tags)
-        </dt>
-        <dd>
-
-            @foreach (var c in Model.Tags)
-            {
-                <li>@c.Name</li>
-            }
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.HeroImage)
-        </dt>
-        <dd>
-            <div class="col-sm-2">
-                @if (Model.HeroImage != null)
-                {
-                    @Html.Raw("<img class=\"img-responsive\" src=\"data:image/jpeg;base64," + Convert.ToBase64String(Model.HeroImage) + "\" />")
-                }
-            </div>
-        </dd>
-    </dl>
-</div>
-<p>
-    @if (User.Identity.IsAuthenticated)
-    {
-        Html.ActionLink("Edit", "Edit", new { id = Model.Id });
-    }
-    @Html.ActionLink("Back to List", "Index")
-</p>*@
