@@ -9,7 +9,7 @@ namespace your_Blog.Controllers.Article
     [Authorize]
     public class TagController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: TagModels
         public ActionResult Index()
@@ -24,11 +24,14 @@ namespace your_Blog.Controllers.Article
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             TagModel tagModel = db.Tags.Find(id);
+
             if (tagModel == null)
             {
                 return HttpNotFound();
             }
+
             return View(tagModel);
         }
 
@@ -39,8 +42,6 @@ namespace your_Blog.Controllers.Article
         }
 
         // POST: TagModels/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name")] TagModel tagModel)
@@ -71,8 +72,6 @@ namespace your_Blog.Controllers.Article
         }
 
         // POST: TagModels/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] TagModel tagModel)

@@ -54,13 +54,13 @@
                     </ul>
                     @if (User.Identity.IsAuthenticated)
                     {
-                <ul class="post-status">
-                    <li>
-                        @Html.ActionLink("Удалить", "Delete", new { id = Model.Id, @class = "readmore" })
-                    </li>
-                </ul>
+                        <ul class="post-status">
+                            <li>
+                                @Html.ActionLink("Удалить", "Delete", new { id = Model.Id, @class = "readmore" })
+                            </li>
+                        </ul>
                     }
-                    
+
                     <div class="clear"></div>
                 </div>
                 <div class="clear"></div>

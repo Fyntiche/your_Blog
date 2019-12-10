@@ -14,7 +14,7 @@ namespace your_Blog.Controllers.Article
 {
     public class ArticleController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Article
         public async Task<ActionResult> Index(int page = 1)
@@ -62,8 +62,6 @@ namespace your_Blog.Controllers.Article
         }
 
         // POST: Article/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(
@@ -93,13 +91,13 @@ namespace your_Blog.Controllers.Article
                     articleModel.HeroImage = fotoData;
                 }
 
-
                 db.Articles.Add(articleModel);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", articleModel.CategoryId);
+
             return View(articleModel);
         }
 
@@ -116,20 +114,19 @@ namespace your_Blog.Controllers.Article
             {
                 return HttpNotFound();
             }
-            //SelectList tags = new SelectList(db.Tags, "Id", "Name", articleModel.Tags);
+
             ViewBag.Tags = db.Tags.Include(x => x.Articles).ToList();
-            //ViewBag.Tags = db.Tags.ToList();
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", articleModel.CategoryId);
+
             return View(articleModel);
         }
 
-        // POST: Article/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Article/Edit
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(
-            /*[Bind(Include = "Id,Name,ShortDescription,Description,Date,CategoryId")]*/ ArticleModel articleModel,
+            ArticleModel articleModel,
             int[] selectedTags,
             HttpPostedFileBase uploadFoto)
         {
@@ -163,11 +160,14 @@ namespace your_Blog.Controllers.Article
                     }
                     newAtricle.HeroImage = fotoData;
                 }
+
                 db.Entry(newAtricle).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", articleModel.CategoryId);
+
             return View(articleModel);
         }
 
@@ -179,10 +179,12 @@ namespace your_Blog.Controllers.Article
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ArticleModel articleModel = await db.Articles.FindAsync(id);
+
             if (articleModel == null)
             {
                 return HttpNotFound();
             }
+
             return View(articleModel);
         }
 
@@ -206,6 +208,12 @@ namespace your_Blog.Controllers.Article
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Фильтрация статей по категориям.
+        /// </summary>
+        /// <param name="name">Выбранная категория.</param>
+        /// <param name="page">Страница.</param>
+        /// <returns>Статьи.</returns>
         public ActionResult Category(string name, int page = 1)
         {
             CategoryModel category = db.Categories.Include(p => p.Articles).FirstOrDefault(t => t.Name == name.ToString());
@@ -215,28 +223,40 @@ namespace your_Blog.Controllers.Article
             }
 
             int pageSize = 3;
+
             IEnumerable<ArticleModel> articles = category.Articles.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = category.Articles.Count() };
             IndexViewModel<ArticleModel> ivm = new IndexViewModel<ArticleModel>() { Articles = articles, pageInfo = pageInfo };
 
             ViewBag.Title = name;
+
             var categoryList = db.Categories.ToList();
             var Tag = db.Tags.ToList();
+
             ViewBag.Category = categoryList;
             ViewBag.Tag = Tag;
+
             return View("Index", ivm);
         }
 
-
+        /// <summary>
+        /// Фильтрация статей по тегам.
+        /// </summary>
+        /// <param name="selectedTags">Выбранные теги.</param>
+        /// <param name="page">Страница.</param>
+        /// <returns>Статьи.</returns>
         public ActionResult Tag(int[] selectedTags, int page = 1)
         {
             IEnumerable<ArticleModel> articles = default;
             int pageSize = 3;
+
             PageInfo pageInfo;
+
             if (selectedTags == null)
             {
                 return RedirectToAction("Index");
             }
+
             if (selectedTags != null && selectedTags.Count() != 1)
             {
                 IEnumerable<TagModel> tags = db.Tags.Include(p => p.Articles).Where(co => selectedTags.Contains(co.Id));
@@ -256,7 +276,6 @@ namespace your_Blog.Controllers.Article
                 }
                 pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = articles.Count() };
             }
-
             else
             {
                 var tagName = selectedTags[0].ToString();
@@ -270,22 +289,32 @@ namespace your_Blog.Controllers.Article
             var categoryList = db.Categories.ToList();
             var tagfull = db.Tags.ToList();
             var tagList = db.Tags.Where(x => selectedTags.Contains(x.Id)).ToList();
+
             ViewBag.Category = categoryList;
             ViewBag.Tag = tagfull;
             ViewBag.tagList = tagList;
+
             return View("Index", ivm);
         }
 
+        /// <summary>
+        /// Фильтрация статей по датам публикации.
+        /// </summary>
+        /// <param name="dateAt">Дата публикации с.</param>
+        /// <param name="dateTo">Дата публикации по. </param>
+        /// <param name="page">Страница.</param>
+        /// <returns>Статьи.</returns>
         public ActionResult PublicationDate(DateTime dateAt, DateTime dateTo, int page = 1)
         {
 
             List<ArticleModel> articleModels = db.Articles.ToList();
 
-                if (dateTo < dateAt)
-                {
+            if (dateTo < dateAt)
+            {
                 dateTo = dateAt;
-                }
-                articleModels = articleModels.Where(p => p.Date >= dateAt && p.Date <= dateTo).ToList();
+            }
+
+            articleModels = articleModels.Where(p => p.Date >= dateAt && p.Date <= dateTo).ToList();
 
             if (articleModels == null)
             {
@@ -299,10 +328,12 @@ namespace your_Blog.Controllers.Article
 
             var categoryList = db.Categories.ToList();
             var Tag = db.Tags.ToList();
+
             ViewBag.Category = categoryList;
             ViewBag.DateAt = dateAt;
             ViewBag.DateTo = dateTo;
             ViewBag.Tag = Tag;
+
             return View("Index", ivm);
         }
     }

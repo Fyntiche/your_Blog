@@ -8,7 +8,7 @@ namespace your_Blog.Controllers.Article
 {
     public class CategoryController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Category
         public ActionResult Index()
@@ -23,7 +23,9 @@ namespace your_Blog.Controllers.Article
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             CategoryModel categoryModel = db.Categories.Find(id);
+
             if (categoryModel == null)
             {
                 return HttpNotFound();
@@ -38,8 +40,6 @@ namespace your_Blog.Controllers.Article
         }
 
         // POST: Category/Create
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name")] CategoryModel categoryModel)
@@ -61,7 +61,9 @@ namespace your_Blog.Controllers.Article
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             CategoryModel categoryModel = db.Categories.Find(id);
+
             if (categoryModel == null)
             {
                 return HttpNotFound();
@@ -70,8 +72,6 @@ namespace your_Blog.Controllers.Article
         }
 
         // POST: Category/Edit/5
-        // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
-        // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] CategoryModel categoryModel)
@@ -107,6 +107,7 @@ namespace your_Blog.Controllers.Article
         {
             CategoryModel categoryModel = db.Categories.Find(id);
             var article = db.Articles.Where(p => p.CategoryId == id).ToList();
+
             foreach (var item in article)
             {
                 ArticleModel articleModel = db.Articles.Find(item.Id);
@@ -114,8 +115,10 @@ namespace your_Blog.Controllers.Article
                 db.Entry(articleModel).State = EntityState.Modified;
                 db.SaveChanges();
             }
+
             db.Categories.Remove(categoryModel);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

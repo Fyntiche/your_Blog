@@ -1,8 +1,7 @@
 namespace your_Blog.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class MigrateDB8 : DbMigration
     {
         public override void Up()
@@ -12,7 +11,7 @@ namespace your_Blog.Migrations
             AlterColumn("dbo.CategoryModels", "Name", c => c.String(nullable: false, maxLength: 100));
             AlterColumn("dbo.TagModels", "Name", c => c.String(nullable: false, maxLength: 50));
         }
-        
+
         public override void Down()
         {
             AlterColumn("dbo.TagModels", "Name", c => c.String(nullable: false));

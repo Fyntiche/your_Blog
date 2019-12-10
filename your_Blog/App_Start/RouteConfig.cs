@@ -9,7 +9,6 @@ namespace your_Blog
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-
             routes.MapRoute(
             name: "AdmiTag",
             url: "admin/tag/{action}/{id}",

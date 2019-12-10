@@ -86,12 +86,6 @@ namespace your_Blog.Controllers
             return RedirectToAction("ManageLogins", new { Message = message });
         }
 
-        
-        
-
-        
-       
-
         //
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()

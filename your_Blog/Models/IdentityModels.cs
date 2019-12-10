@@ -40,7 +40,6 @@ namespace your_Blog.Models
                 .ToTable("TagArticle"));
         }
 
-
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
