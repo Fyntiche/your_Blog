@@ -20,16 +20,17 @@ namespace your_Blog.Controllers.Article
         public async Task<ActionResult> Index(int page = 1)
         {
             int pageSize = 3;
-            var category = db.Categories.ToList();
-            var Tag = db.Tags.ToList();
-            ViewBag.Category = category;
-            ViewBag.Tag = Tag;
+            ViewBag.Category = db.Categories.ToList().Where(c => c.Id != 1);
+            ViewBag.Tag = db.Tags.ToList();
+
             IEnumerable<ArticleModel> articles = await db.Articles
                 .Include(a => a.Category)
                 .OrderByDescending(a => a.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize).ToListAsync();
+
             PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = db.Articles.Count() };
+
             IndexViewModel<ArticleModel> ivm = new IndexViewModel<ArticleModel>() { Articles = articles, pageInfo = pageInfo };
 
             return View(ivm);
@@ -56,8 +57,9 @@ namespace your_Blog.Controllers.Article
         // GET: Article/Create
         public ActionResult Create()
         {
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
+            ViewBag.CategoryId = new SelectList(db.Categories.ToList().Where(c => c.Id != 1).ToList(), "Id", "Name");
             ViewBag.Tags = db.Tags.ToList();
+
             return View();
         }
 
@@ -69,9 +71,9 @@ namespace your_Blog.Controllers.Article
             int[] selectedTags,
             HttpPostedFileBase uploadFoto)
         {
-            articleModel.Date = DateTime.Now;
             if (ModelState.IsValid)
             {
+                articleModel.Date = DateTime.Now;
                 if (selectedTags != null)
                 {
                     //получаем выбранные теги
@@ -96,7 +98,7 @@ namespace your_Blog.Controllers.Article
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", articleModel.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.Categories.ToList().Where(c => c.Id != 1).ToList(), "Id", "Name");
 
             return View(articleModel);
         }
@@ -224,17 +226,14 @@ namespace your_Blog.Controllers.Article
 
             int pageSize = 3;
 
-            IEnumerable<ArticleModel> articles = category.Articles.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            IEnumerable<ArticleModel> articles = category.Articles.OrderByDescending(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = category.Articles.Count() };
             IndexViewModel<ArticleModel> ivm = new IndexViewModel<ArticleModel>() { Articles = articles, pageInfo = pageInfo };
 
             ViewBag.Title = name;
 
-            var categoryList = db.Categories.ToList();
-            var Tag = db.Tags.ToList();
-
-            ViewBag.Category = categoryList;
-            ViewBag.Tag = Tag;
+            ViewBag.Category = db.Categories.ToList().Where(c => c.Id != 1);
+            ViewBag.Tag = db.Tags.ToList();
 
             return View("Index", ivm);
         }
@@ -267,12 +266,10 @@ namespace your_Blog.Controllers.Article
 
                 IEnumerable<ArticleModel> articlesbuffer = default;
 
-
                 foreach (var item in tags)
                 {
-                    articlesbuffer = item.Articles.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    articlesbuffer = item.Articles.OrderByDescending(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
                     articles = articlesbuffer.Union(item.Articles.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList());
-
                 }
                 pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = articles.Count() };
             }
@@ -280,19 +277,15 @@ namespace your_Blog.Controllers.Article
             {
                 var tagName = selectedTags[0].ToString();
                 TagModel tag = db.Tags.Include(p => p.Articles).FirstOrDefault(t => t.Id.ToString() == tagName);
-                articles = tag.Articles.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                articles = tag.Articles.OrderByDescending(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
                 pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = tag.Articles.Count() };
             }
 
             IndexViewModel<ArticleModel> ivm = new IndexViewModel<ArticleModel>() { Articles = articles, pageInfo = pageInfo };
 
-            var categoryList = db.Categories.ToList();
-            var tagfull = db.Tags.ToList();
-            var tagList = db.Tags.Where(x => selectedTags.Contains(x.Id)).ToList();
-
-            ViewBag.Category = categoryList;
-            ViewBag.Tag = tagfull;
-            ViewBag.tagList = tagList;
+            ViewBag.Category = db.Categories.ToList().Where(c => c.Id != 1);
+            ViewBag.Tag = db.Tags.ToList();
+            ViewBag.tagList = db.Tags.Where(x => selectedTags.Contains(x.Id)).ToList();
 
             return View("Index", ivm);
         }
@@ -322,19 +315,18 @@ namespace your_Blog.Controllers.Article
             }
 
             int pageSize = 3;
-            IEnumerable<ArticleModel> articles = articleModels.OrderBy(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            IEnumerable<ArticleModel> articles = articleModels.OrderByDescending(a => a.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = articleModels.Count() };
             IndexViewModel<ArticleModel> ivm = new IndexViewModel<ArticleModel>() { Articles = articles, pageInfo = pageInfo };
 
-            var categoryList = db.Categories.ToList();
-            var Tag = db.Tags.ToList();
-
-            ViewBag.Category = categoryList;
+            ViewBag.Category = db.Categories.ToList().Where(c => c.Id != 1);
             ViewBag.DateAt = dateAt;
             ViewBag.DateTo = dateTo;
-            ViewBag.Tag = Tag;
+            ViewBag.Tag = db.Tags.ToList();
 
             return View("Index", ivm);
         }
+
+            
     }
 }

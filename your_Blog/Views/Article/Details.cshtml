@@ -19,19 +19,23 @@
                     <div class="clear"></div>
                 </div>
 
+
                 <div class="featured-image">
                     @if (Model.HeroImage != null)
                     {
                         @Html.Raw("<img class=\"img-responsive\" src=\"data:image/jpeg;base64," + Convert.ToBase64String(Model.HeroImage) + "\" />")
                     }
-                    <div class="post-icon">
-                        <span class="fa-stack fa-lg">
-                            <i class="fa fa-circle fa-stack-2x"></i>
-                            <a href="@Url.Action("Edit", new { id=Model.Id}) ">
-                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                            </a>
-                        </span>
-                    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="post-icon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <a href="@Url.Action("Edit", new { id = Model.Id }) ">
+                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                </a>
+                            </span>
+                        </div>
+                    }
                 </div>
 
                 <div class="post-margin">
