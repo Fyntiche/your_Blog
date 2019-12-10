@@ -9,13 +9,15 @@ namespace your_Blog.Models
     /// </summary>
     public class TagModel
     {
+        [Key]
         [HiddenInput]
         /// <summary>
         /// Идентификатор тега статьи.
         /// </summary>
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Название тега должно быть заполнено")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Длина строки должна быть от 3 до 50 символов")]
         [Display(Name = "Название тега")]
         /// <summary>
         /// Название тега статьи.

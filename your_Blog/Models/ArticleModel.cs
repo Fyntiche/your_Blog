@@ -10,14 +10,16 @@ namespace your_Blog.Models
     /// </summary>
     public class ArticleModel
     {
+        [Key]
         [HiddenInput]
         /// <summary>
         /// Идентификатор статьи.
         /// </summary>
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Название статьи должно быть заполнено")]
         [Display(Name = "Название статьи")]
+        [StringLength(200, MinimumLength = 3, ErrorMessage = "Длина строки должна быть от 3 до 200 символов")]
         /// <summary>
         /// Название статьи.
         /// </summary>
@@ -30,12 +32,15 @@ namespace your_Blog.Models
         /// </summary>
         public string ShortDescription { get; set; }
 
+        [Required(ErrorMessage = "Текст статьи должно быть заполнено")]
+        [DataType(DataType.MultilineText)]
         [Display(Name = "Текст статьи")]
         /// <summary>
         /// Текст статьи.
         /// </summary>
         public string Description { get; set; }
 
+        [HiddenInput]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Display(Name = "Дата создания")]
@@ -65,8 +70,6 @@ namespace your_Blog.Models
 
         [Display(Name = "Фотография")]
         public byte[] HeroImage { get; set; }
-
-
 
     }
 }
