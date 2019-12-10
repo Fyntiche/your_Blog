@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="~/Content/css/zerogrid.css" type="text/css" media="screen">
     <link rel="stylesheet" href="~/Content/css/responsive.css" type="text/css" media="screen">
     <link rel="stylesheet" href="~/Content/daterangepicker.css">
+    <link rel="stylesheet" href="~/Content/Site.css" type="text/css" media="screen">
     <script type='text/javascript' src='~/Scripts/js/jquery.js'></script>
     <script type='text/javascript' src='~/Scripts/js/jquery-migrate.min.js'></script>
     <script type='text/javascript' src='~/Scripts/js/jquery-1.10.2.min.js'></script>
@@ -43,19 +44,22 @@
                             <li>
                                 @Html.ActionLink("Статьи", "Index", "Article", new { area = "" }, new { @class = "menu-item current-menu-item" })
                             </li>
-                            <li class="menu-item">
-                                <a href="#">
-                                    Админ. панель
-                                </a>
-                                <ul class="sub-menu">
-                                    <li class="menu-item">
-                                        @Html.ActionLink("Теги", "Index", "Tag")
-                                    </li>
-                                    <li class="menu-item">
-                                        @Html.ActionLink("Категории", "Index", "Category")
-                                    </li>
-                                </ul>
-                            </li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="menu-item">
+                                    <a href="#">
+                                        Админ. панель
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item">
+                                            @Html.ActionLink("Теги", "Index", "Tag")
+                                        </li>
+                                        <li class="menu-item">
+                                            @Html.ActionLink("Категории", "Index", "Category")
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
                         </div>
                         <div class="headerMenuItemRight">
                             @Html.Partial("_LoginPartial")

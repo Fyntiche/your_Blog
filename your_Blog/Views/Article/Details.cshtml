@@ -6,7 +6,7 @@
 
 <div class="container zerogrid">
 
-    <div class="col-2-3" id="post-container">
+    <div class="col-8" id="post-container">
         <div class="wrap-col">
 
             <div class="post">
@@ -52,11 +52,15 @@
                             @Html.ActionLink("Вернуться к списку", "Index")
                         </li>
                     </ul>
-                    <ul class="post-status">
-                        <li>
-                            @Html.ActionLink("Удалить", "Delete", new { id = Model.Id, @class = "readmore" })
-                        </li>
-                    </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                <ul class="post-status">
+                    <li>
+                        @Html.ActionLink("Удалить", "Delete", new { id = Model.Id, @class = "readmore" })
+                    </li>
+                </ul>
+                    }
+                    
                     <div class="clear"></div>
                 </div>
                 <div class="clear"></div>
